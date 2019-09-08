@@ -3,4 +3,60 @@
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
-/*# sourceMappingURL=style.css.map */
+
+.add_field {
+  background-color: rgb(17, 17, 17);
+  padding: 20px;
+  text-align: center;
+  vertical-align: middle;
+  border-right: 1px solid white;
+}
+
+.task_input {
+  margin-left: 5px;
+  padding: 8px;
+  border: none;
+  border-bottom: solid red;
+  background-color: rgb(17, 17, 17);
+  color: white;
+}
+
+.task_input:focus{
+  border-bottom: solid green; 
+}
+
+.grid-layout {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 2fr;
+      grid-template-columns: 1fr 2fr;
+
+  margin: 50px 60px;
+  padding: 30px;
+}
+
+.lists_division {
+  background-color: rgb(17, 17, 17);
+  padding: 30px;
+}
+
+.list{
+  list-style-type: none;
+}
+
+/*
+?How to make a height full length of viewPort
+but we don't need it here for now
+*/
+.lists_division, .add_field{
+  height: 500px;
+  color: white;
+}
+
+.completed{
+  display: none;
+}
+
+.All{
+  display: none;
+}
