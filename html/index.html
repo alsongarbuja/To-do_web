@@ -8,24 +8,30 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
-    <script type="text/javascript" src="../js/script.js"></script>
+    <script defer type="text/javascript" src="../js/script.js"></script>
 </head>
 <body>
-    <div class="add_field">
-        <i class="fas fa-plus"></i>
-        <input type="text" name="add_field" id="task">
+    <div class="grid-layout">
+        <div class="add_field">
+            <i class="fas fa-plus" onclick="add()"></i>
+            <input type="text" name="add_field" id="task" class="task_input">
+        </div>
+        <div class="lists_division uncompleted">
+            <ul class="list" id="uList">
+                <!-- its for the uncompleted list to be added -->
+            </ul>
+        </div>
+        <div class="lists_division completed">
+            <ul class="list" id="cList">
+                <!-- its for the completed list -->
+            </ul>
+        </div>
+        <div class="lists_division All">
+            <ul class="list" id="aList">
+                <!-- its for all the task list -->
+            </ul>
+        </div>
+        <!-- <div class="lists deleted"></div> -->
     </div>
-    <div class="lists_division uncompleted">
-        <ul class="list uList">
-
-        </ul>
-    </div>
-    <div class="lists_division completed">
-        <ul class="list cList">
-
-        </ul>
-    </div>
-    <div class="lists_division All"></div>
-    <!-- <div class="lists deleted"></div> -->
 </body>
 </html>
