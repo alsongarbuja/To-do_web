@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>To-Do</title>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <script defer type="text/javascript" src="../js/script.js"></script>
+</head>
+<body>
+    <div class="grid-layout">
+        <div class="add_field">
+            <div class="add_input">
+                <i class="fas fa-plus" onclick="add()"></i>
+                <input type="text" name="add_field" id="task" class="task_input">
+            </div>
+            <div class="key_bind">
+                <h2>Key Binds</h2>
+                <ul class="list">
+                    <li>Press + to start inputing to do</li>
+                    <li>Press `Alt + -` to cancel the input</li>
+                    <li>Press enter &crarr; to add the to do</li>
+                    <li>Press `Alt + u` to see the uncompleted to do's</li>
+                    <li>Press `Alt + c` to see the completed to do's</li>
+                    <li>Press `Alt + a` to see all to do's</li>
+                </ul>
+            </div>
+        </div>
+        <div class="list_field">
+            <div class="lists_division active_division uncompleted">
+                <h3>TO DO</h3>
+                <ul class="list" id="uList">
+                    <!-- its for the uncompleted list to be added -->
+                </ul>
+            </div>
+            <div class="lists_division completed">
+                <h3>Completed</h3>
+                <ul class="list" id="cList">
+                    <!-- its for the completed list -->
+                </ul>
+            </div>
+            <div class="lists_division All">
+                <h3>All TO DO's</h3>
+                <ul class="list" id="aList">
+                    <!-- its for all the task list -->
+                </ul>
+            </div>
+            <!-- <div class="lists deleted"></div> -->
+            <div class="arrows left-arrow">
+                <span>&lt;</span>
+            </div>
+            <div class="arrows right-arrow">
+                <span>&gt;</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

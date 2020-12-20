@@ -7,7 +7,7 @@
 .add_field {
   background-color: rgb(17, 17, 17);
   padding: 20px;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   border-right: 1px solid white;
 }
@@ -19,6 +19,7 @@
   border-bottom: solid red;
   background-color: rgb(17, 17, 17);
   color: white;
+  outline: none;
 }
 
 .task_input:focus{
@@ -31,32 +32,80 @@
   -ms-grid-columns: 1fr 2fr;
       grid-template-columns: 1fr 2fr;
 
-  margin: 50px 60px;
-  padding: 30px;
+  height: 100vh;
+}
+
+.list_field {
+  background-color: rgb(17, 17, 17);
+  position: relative;
 }
 
 .lists_division {
-  background-color: rgb(17, 17, 17);
   padding: 30px;
+  display: none;
+}
+
+.active_division {
+  display: block;
 }
 
 .list{
   list-style-type: none;
 }
 
+.key_bind>h2 {
+  margin: 20px 0;
+}
+
+.key_bind>ul {
+  line-height: 40px;
+  margin: 0 -30px;
+}
+
+.key_bind>ul li {
+  text-align: left;
+}
+
 /*
-?How to make a height full length of viewPort
 but we don't need it here for now
 */
 .lists_division, .add_field{
-  height: 500px;
   color: white;
 }
 
-.completed{
-  display: none;
+h3 {
+  font-size: 32px;
 }
 
-.All{
-  display: none;
+#uList, #cList, #aList {
+  padding: 20px;
+  line-height: 30px;
+  font-size: 24px;
+}
+
+input[type="checkbox"] {
+  margin: 0 10px;
+}
+
+.left-arrow, .right-arrow {
+  position: fixed;
+  color: #e2e2e2;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 5px;
+  background-color: #83818188;
+  cursor: pointer;
+  opacity: 0.1;
+}
+
+.right-arrow {
+  right: 5px;
+}
+
+.arrows>span {
+  font-size: 100px;
+}
+
+.arrows:hover {
+  opacity: 0.8;
 }
