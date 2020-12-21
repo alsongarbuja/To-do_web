@@ -116,9 +116,9 @@ function render()
             function(t, ind)
             {
                 if(t.isComplete == "true"){
-                    complete += "<li><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked>"+t.task+"</li><br/>";
+                    complete += "<li><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'>"+t.task+"</label></li><br/>";
                 }else{
-                    uncomplete += "<li><input type = 'checkbox' onclick = 'changeStatus("+ind+");'>"+t.task+"</li><br/>";
+                    uncomplete += "<li><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'>"+t.task+"</label></li><br/>";
                 }
             }
         )
@@ -140,7 +140,7 @@ function addTask(){
             }else{
                 isChecked = "";
             }
-            all += "<li><input type='checkbox' onclick='changeStatus("+ind+");' "+isChecked+" >"+t.task+"</li><br/>";
+            all += "<li><input type='checkbox' onclick='changeStatus("+ind+");' "+isChecked+" id='taskA"+ind+"'><label for='taskA"+ind+"'>"+t.task+"</label></li><br/>";
         }
     );
 

@@ -1,11 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+:root {
+  --main-bg-color: #252525;
+}
+
 * {
   margin: 0;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--main-bg-color);
 }
 
 .add_field {
-  background-color: rgb(17, 17, 17);
   padding: 20px;
   text-align: left;
   vertical-align: middle;
@@ -15,9 +25,10 @@
 .task_input {
   margin-left: 5px;
   padding: 8px;
+  width: 90%;
   border: none;
   border-bottom: solid red;
-  background-color: rgb(17, 17, 17);
+  background-color: var(--main-bg-color);
   color: white;
   outline: none;
 }
@@ -36,7 +47,6 @@
 }
 
 .list_field {
-  background-color: rgb(17, 17, 17);
   position: relative;
 }
 
@@ -59,11 +69,20 @@
 
 .key_bind>ul {
   line-height: 40px;
-  margin: 0 -30px;
+  margin: 0 -8%;
 }
 
 .key_bind>ul li {
   text-align: left;
+}
+
+.keys {
+  /* color: #8a8c84; */
+  /* color: #355e3b; */
+  /* color: #fff44f; */
+  font-weight: 700;
+  /* color: #c57893; */
+  color: #829ba6;
 }
 
 /*
@@ -108,4 +127,18 @@ input[type="checkbox"] {
 
 .arrows:hover {
   opacity: 0.8;
+}
+
+@media screen and (max-width: 700px){
+  .grid-layout {
+    display: block;
+  }
+
+  .add_field {
+    padding: 20px 10px;
+  }
+
+  .key_bind {
+    display: none;
+  }
 }
