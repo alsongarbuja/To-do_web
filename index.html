@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <script defer type="text/javascript" src="./js/script.js"></script>
 </head>
-<body>
+<body onload="pushTask(); render();">
     <div class="grid-layout">
         <div class="add_field">
             <div class="add_input">
@@ -20,12 +20,13 @@
             <div class="key_bind">
                 <h2>Key Binds</h2>
                 <ul class="list">
-                    <li>Press + to start inputing to do</li>
-                    <li>Press `Alt + -` to cancel the input</li>
-                    <li>Press enter &crarr; to add the to do</li>
-                    <li>Press `Alt + u` to see the uncompleted to do's</li>
-                    <li>Press `Alt + c` to see the completed to do's</li>
-                    <li>Press `Alt + a` to see all to do's</li>
+                    <li>Press <span class="keys">+</span> to start inputing to do</li>
+                    <li>Press <span class="keys">`Alt + -`</span> to cancel the input</li>
+                    <li>Press <span class="keys">enter &crarr;</span> to add the to do</li>
+                    <li>Press <span class="keys">`Alt + u`</span> to see the uncompleted to do's</li>
+                    <li>Press <span class="keys">`Alt + c`</span> to see the completed to do's</li>
+                    <li>Press <span class="keys">`Alt + a`</span> to see all to do's</li>
+                    <li>Press <span class="keys">Left&larr; and Right&rarr; arrows</span> to change the lists</li>
                 </ul>
             </div>
         </div>

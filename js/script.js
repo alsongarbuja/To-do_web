@@ -9,24 +9,43 @@ var completedUlList = document.querySelector("#cList");
 var allListUl = document.querySelector("#aList");
 var divisions = document.getElementsByClassName("lists_division");
 
+if(!localStorage.getItem("index")){
+    localStorage.setItem("index", "0");
+}
 
 function removeActiveDiv(){
     for(var i = 0; i < divisions.length; i++){
         divisions[i].classList.remove("active_division");
     }
 }
+
+var index = localStorage.getItem("index");
+var date = new Date;
+
 /* add the task to the task array and call function render() when the plus is clicked*/
 function add()
 {
     // the code runs only if the input has some values or text in it
     if(listInput.value)
     {
+        localStorage.setItem("task"+index, listInput.value);
+        localStorage.setItem("isCompleted"+index, false);
+        localStorage.setItem("updateDate"+index, date);
+        localStorage.setItem("isDeleted"+index, false);
+
         tasks.push(
             {
-                name: listInput.value,
-                isComplete: false
+                task: localStorage.getItem("task"+index),
+                isComplete: localStorage.getItem("isCompleted"+index),
+                updateDate: localStorage.getItem("updateDate"+index),
+                isDeleted: localStorage.getItem("isDeleted"+index)
             }
         );
+
+        console.log(tasks);
+
+        index++;
+        localStorage.setItem("index", index);
             
         // after the list is pushed in the array then the input will be erased itself
         listInput.value = "";
@@ -35,8 +54,23 @@ function add()
     }
 };
 
+function pushTask(){
+    tasks = [];
+
+    for(let i = 0; i < index; i++){
+        tasks.push(
+            {
+                task: localStorage.getItem("task"+i),
+                isComplete: localStorage.getItem("isCompleted"+i),
+                updateDate: localStorage.getItem("updateDate"+i),
+                isDeleted: localStorage.getItem("isDeleted"+i)
+            }
+        );
+    }
+}
+
 document.onkeyup = function(e) {
-    // console.log(e.keyCode);
+    // console.log(e.key);
     if (e.key == '+') {
         listInput.focus();
     }else if (e.altKey && e.key == 'u') {
@@ -51,6 +85,10 @@ document.onkeyup = function(e) {
         removeActiveDiv();
         allList.classList.add("active_division");
         activeIndex = 2;
+    }else if(e.key == 'ArrowRight'){
+        slideDivision(1);
+    }else if(e.key == 'ArrowLeft'){
+        slideDivision(-1);
     }
 };
 
@@ -77,10 +115,10 @@ function render()
         tasks.forEach(
             function(t, ind)
             {
-                if(t.isComplete){
-                    complete += "<li><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked>"+t.name+"</li><br/>";
+                if(t.isComplete == "true"){
+                    complete += "<li><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked>"+t.task+"</li><br/>";
                 }else{
-                    uncomplete += "<li><input type = 'checkbox' onclick = 'changeStatus("+ind+");'>"+t.name+"</li><br/>";
+                    uncomplete += "<li><input type = 'checkbox' onclick = 'changeStatus("+ind+");'>"+t.task+"</li><br/>";
                 }
             }
         )
@@ -97,12 +135,12 @@ function addTask(){
 
     tasks.forEach(
         function(t, ind){
-            if(t.isComplete){
+            if(t.isComplete == "true"){
                 isChecked = "checked";
             }else{
                 isChecked = "";
             }
-            all += "<li><input type='checkbox' onclick='changeStatus("+ind+");' "+isChecked+" >"+t.name+"</li><br/>";
+            all += "<li><input type='checkbox' onclick='changeStatus("+ind+");' "+isChecked+" >"+t.task+"</li><br/>";
         }
     );
 
@@ -112,11 +150,13 @@ function addTask(){
 /*it changes the stauts that is isComplete of the task */
 function changeStatus(ind)
 {
-    if(tasks[ind].isComplete){
-        tasks[ind].isComplete = false;
+    if(tasks[ind].isComplete == "true"){
+        tasks[ind].isComplete = "false";
     }else{
-        tasks[ind].isComplete = true;
+        tasks[ind].isComplete = "true";
     }
+
+    localStorage.setItem("isCompleted"+ind, tasks[ind].isComplete);
 
     render();
 };
