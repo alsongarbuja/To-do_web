@@ -10,7 +10,11 @@
     <link rel="stylesheet" href="./css/style.css">
     <script defer type="text/javascript" src="./js/script.js"></script>
 </head>
-<body onload="pushTask(); render();">
+<body onload="deleteTaskPermanently(); pushTask(); addTask(); render();">
+    <div class="alert-popup">
+        <p>Task added to completed list</p>
+        <span class="cross-mark">&times;</span>
+    </div>
     <div class="grid-layout">
         <div class="add_field">
             <div class="add_input">
@@ -26,30 +30,39 @@
                     <li>Press <span class="keys">`Alt + u`</span> to see the uncompleted to do's</li>
                     <li>Press <span class="keys">`Alt + c`</span> to see the completed to do's</li>
                     <li>Press <span class="keys">`Alt + a`</span> to see all to do's</li>
+                    <li>Press <span class="keys">`Alt + t`</span> to see deleted to do's</li>
                     <li>Press <span class="keys">Left&larr; and Right&rarr; arrows</span> to change the lists</li>
+                    <li>Press <span class="keys">`Alt + s`</span> to select the first task of the list.</li>
+                    <li>Press <span class="keys">Up&uarr; and  Down&darr; arrows</span> to navigate the task in list</li>
+                    <li>Press <span class="keys">Space</span> to check and uncheck the task.</li>
                 </ul>
             </div>
         </div>
         <div class="list_field">
             <div class="lists_division active_division uncompleted">
                 <h3>TO DO</h3>
-                <ul class="list" id="uList">
+                <ul class="list to-list" id="uList">
                     <!-- its for the uncompleted list to be added -->
                 </ul>
             </div>
             <div class="lists_division completed">
                 <h3>Completed</h3>
-                <ul class="list" id="cList">
+                <ul class="list to-list" id="cList">
                     <!-- its for the completed list -->
                 </ul>
             </div>
             <div class="lists_division All">
                 <h3>All TO DO's</h3>
-                <ul class="list" id="aList">
+                <ul class="list to-list" id="aList">
                     <!-- its for all the task list -->
                 </ul>
             </div>
-            <!-- <div class="lists deleted"></div> -->
+            <div class="lists_division deleted">
+                <p><h3>Deleted</h3>(The task deleted for more than 15 days will be gone permanently)</p>
+                <ul class="list to-list" id="dList">
+                    <!-- its for deleted task list -->
+                </ul>
+            </div>
             <div class="arrows left-arrow">
                 <span>&lt;</span>
             </div>
