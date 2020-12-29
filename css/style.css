@@ -41,12 +41,38 @@ body {
   border-radius: 10px;
   z-index: 2;
   animation: fromUp .5s ease-in-out;
+  color: white;
 }
 
-.cross-mark {
+.cross-mark, .cross-mark2 {
   font-size: 2rem;
   color: white;
   padding: 5px;
+  cursor: pointer;
+}
+
+.details-popup {
+  display: none;
+  color: #e2e2e2;
+  line-height: 2rem;
+  position: fixed;
+  z-index: 2;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  background-color: #252525;
+  padding: 20px;
+  width: 30%;
+  box-shadow: 10px 5px 5px black;
+}
+
+.task-text {
+  cursor: pointer;
+}
+
+.details-popup .upper-part {
+  display: flex;
+  justify-content: space-between;
 }
 
 .add_field {
@@ -155,6 +181,13 @@ h3 {
   align-items: center;
 }
 
+.to-list li>div {
+  margin-right: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .date-text {
   font-size: .75rem;
 }
@@ -178,10 +211,14 @@ input[type="checkbox"] + label {
   cursor: pointer;
 }
 
+.task-text {
+  margin-left: 35px;
+}
+
 input[type="checkbox"] + label:before {
   content: '';
   position: absolute;
-  top: 8px;
+  top: 5px;
   left: 0;
   width: 20px;
   height: 20px;
@@ -190,7 +227,6 @@ input[type="checkbox"] + label:before {
   opacity: .6;
   -webkit-transition: all .12s, border-color .08s;
   transition: all .12s, border-color .08s;
-  
 }
 
 input[type="checkbox"]:checked + label:before {
@@ -261,5 +297,14 @@ input[type="checkbox"]:checked + label:before {
 
   .key_bind {
     display: none;
+  }
+
+  .date-text {
+    display: none;
+  }
+
+  .details-popup {
+    left: 50%;
+    width: 70%;
   }
 }
