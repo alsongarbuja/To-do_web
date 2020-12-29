@@ -70,7 +70,7 @@ body {
   cursor: pointer;
 }
 
-.details-popup .upper-part {
+.upper-part {
   display: flex;
   justify-content: space-between;
 }
