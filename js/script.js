@@ -12,6 +12,7 @@ var deletedListUl = document.querySelector("#dList");
 var divisions = document.getElementsByClassName("lists_division");
 var alertDiv = document.querySelector(".alert-popup");
 var crossMark = document.querySelector(".cross-mark");
+var detailsPopup = document.querySelector(".details-popup");
 
 if(!localStorage.getItem("index")){
     localStorage.setItem("index", "0");
@@ -28,6 +29,12 @@ crossMark.addEventListener('click', closeAlert);
 function closeAlert(){
     alertDiv.style.display = "none";
 }
+
+function closeDetails(){
+    detailsPopup.style.display = "none";
+}
+
+document.querySelector(".cross-mark2").addEventListener('click', closeDetails);
 
 function alertPop(color, mssg){
     alertDiv.children.item(0).innerHTML = mssg;
@@ -74,7 +81,7 @@ function add()
 
         document.querySelector(".active_division").scrollTop = document.querySelector(".active_division").scrollHeight;
         
-        alertPop("brown", "Added new Task");
+        alertPop("#2E5AAC", "Added new Task");
     }
 };
 
@@ -128,6 +135,18 @@ document.onkeyup = function(e) {
     }
 };
 
+function showDetails(ind){
+
+    detailsPopup.children.item(0).children.item(0).innerHTML = tasks[ind].updateDate;
+    detailsPopup.children.item(2).children.item(0).innerHTML = tasks[ind].task;
+
+    detailsPopup.style.display = "block";
+
+    setTimeout(function(){
+        closeDetails();
+    }, 3000);
+}
+
 function selectTop(){
     var activeDiv = document.querySelector(".active_division");
 
@@ -161,7 +180,7 @@ function navigateUpDown(val){
 listInput.addEventListener("keydown", function(event){
     if(event.key == 'Enter'){
         add();
-    } 
+    }
 });
 
 listInput.onkeyup = function(event){
@@ -184,9 +203,9 @@ function render()
                 if(t.isDeleted == "true"){
                     deleted += "<li><div><input type = 'checkbox' disabled><strike>"+t.task+"</strike></div><div class='trash-can'><i class='fas fa-trash-restore' onclick='recoverTask("+ind+")'></i><p class='date-text'>Deleted at: "+t.updateDate+"</p></div></li>";
                 }else if(t.isComplete == "true"){
-                    complete += "<li><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'>"+t.task+"</label></div><div class='trash-can'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><p class='date-text'>Completed at: "+t.updateDate+"</p></div></li>";
+                    complete += "<li><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'></label><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></div><div class='trash-can'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><p class='date-text'>Completed at: "+t.updateDate+"</p></div></li>";
                 }else{
-                    uncomplete += "<li><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'>"+t.task+"</label></div><div class='trash-can'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><p class='date-text'>Created at: "+t.updateDate+"</p></div></li>";
+                    uncomplete += "<li><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'></label><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></div><div class='trash-can'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><p class='date-text'>Created at: "+t.updateDate+"</p></div></li>";
                 }
             }
         )
@@ -210,7 +229,7 @@ function addTask(){
                 }else{
                     isChecked = "";
                 }
-                all += "<li><div><input type='checkbox' onclick='changeStatus("+ind+");' "+isChecked+" id='taskA"+ind+"'><label for='taskA"+ind+"'>"+t.task+"</label></div><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i></li>";
+                all += "<li><div><input type='checkbox' onclick='changeStatus("+ind+");' "+isChecked+" id='taskA"+ind+"'><label for='taskA"+ind+"'></label><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></div><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i></li>";
             }
         }
     );
@@ -226,11 +245,11 @@ function changeStatus(ind)
     if(tasks[ind].isComplete == "true"){
         tasks[ind].isComplete = "false";
         mssg = "Removed task from completed list";
-        color = "green";
+        color = "#B95000";
     }else{
         tasks[ind].isComplete = "true";
         mssg = "Added task to completed list";
-        color = "lightgreen";
+        color = "#287D3C";
     }
 
     tasks[ind].updateDate = Date().slice(4, 21);
@@ -252,7 +271,7 @@ function deleteTask(ind)
 
     render();
 
-    alertPop("red", "Task Deleted");
+    alertPop("#DA1414", "Task Deleted");
 }
 
 function recoverTask(ind)
@@ -265,7 +284,7 @@ function recoverTask(ind)
 
     render();
 
-    alertPop("yellow", "Task Recovered");
+    alertPop("#FF8F39", "Task Recovered");
 }
 
 function deleteTaskPermanently(){
