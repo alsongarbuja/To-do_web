@@ -12,7 +12,6 @@ var deletedListUl = document.querySelector("#dList");
 var divisions = document.getElementsByClassName("lists_division");
 var alertDiv = document.querySelector(".alert-popup");
 var crossMark = document.querySelector(".cross-mark");
-var detailsPopup = document.querySelector(".details-popup");
 
 if(!localStorage.getItem("index")){
     localStorage.setItem("index", "0");
@@ -29,12 +28,6 @@ crossMark.addEventListener('click', closeAlert);
 function closeAlert(){
     alertDiv.style.display = "none";
 }
-
-function closeDetails(){
-    detailsPopup.style.display = "none";
-}
-
-document.querySelector(".cross-mark2").addEventListener('click', closeDetails);
 
 function alertPop(color, mssg){
     alertDiv.children.item(0).innerHTML = mssg;
@@ -122,30 +115,19 @@ document.onkeyup = function(e) {
         removeActiveDiv();
         deletedList.classList.add("active_division");
         activeIndex = 3;
-    }else if(e.altKey && e.key == 's'){
-        selectTop();
-    }else if(e.key == 'ArrowRight'){
-        slideDivision(1);
-    }else if(e.key == 'ArrowLeft'){
-        slideDivision(-1);
-    }else if(e.key == 'ArrowUp'){
-        navigateUpDown(-1);
-    }else if(e.key == 'ArrowDown'){
-        navigateUpDown(1);
     }
+    // else if(e.altKey && e.key == 's'){
+    //     selectTop();
+    // }else if(e.key == 'ArrowRight'){
+    //     slideDivision(1);
+    // }else if(e.key == 'ArrowLeft'){
+    //     slideDivision(-1);
+    // }else if(e.key == 'ArrowUp'){
+    //     navigateUpDown(-1);
+    // }else if(e.key == 'ArrowDown'){
+    //     navigateUpDown(1);
+    // }
 };
-
-function showDetails(ind){
-
-    detailsPopup.children.item(0).children.item(0).innerHTML = tasks[ind].updateDate;
-    detailsPopup.children.item(2).children.item(0).innerHTML = tasks[ind].task;
-
-    detailsPopup.style.display = "block";
-
-    setTimeout(function(){
-        closeDetails();
-    }, 3000);
-}
 
 function selectTop(){
     var activeDiv = document.querySelector(".active_division");
@@ -190,6 +172,36 @@ listInput.onkeyup = function(event){
     }
 }
 
+var col = document.getElementsByClassName("desc-part");
+
+function expand(ind, list){
+    var col, overflowText, trashCan;
+
+    if(list == "1"){
+        col = document.getElementsByClassName("desc-partC"+ind)[0];
+        trashCan = document.getElementsByClassName("trash-canC"+ind)[0];
+        overflowText = document.getElementsByClassName("overflow-titleC"+ind)[0];
+    }else if(list == "2"){
+        col = document.getElementsByClassName("desc-partUn"+ind)[0];
+        trashCan = document.getElementsByClassName("trash-canUn"+ind)[0];
+        overflowText = document.getElementsByClassName("overflow-titleUn"+ind)[0];
+    }else if(list == "3"){
+        col = document.getElementsByClassName("desc-partAll"+ind)[0];
+        trashCan = document.getElementsByClassName("trash-canAll"+ind)[0];
+        overflowText = document.getElementsByClassName("overflow-titleAll"+ind)[0];
+    }
+
+    if(col.style.maxHeight){
+        col.style.maxHeight = null;
+        trashCan.style.width = "55%";
+        overflowText.style.display = "block";
+    }else{
+        col.style.maxHeight = col.scrollHeight + "px";
+        trashCan.style.width = "100%";
+        overflowText.style.display = "none";
+    }
+}
+
 /*it adds the task in the respective list */
 function render()
 {
@@ -197,15 +209,17 @@ function render()
     var uncomplete = "";
     var deleted = "";
     
+    // "<li><div class='title-part'><div class='overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'></label><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></div><div class='trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+")'></i></div><p class='date-text'>Completed at: "+t.updateDate+"</p></div></div><div class='desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'></label><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></div></div></li>"
+
         tasks.forEach(
             function(t, ind)
             {
                 if(t.isDeleted == "true"){
-                    deleted += "<li><div><input type = 'checkbox' disabled><strike>"+t.task+"</strike></div><div class='trash-can'><i class='fas fa-trash-restore' onclick='recoverTask("+ind+")'></i><p class='date-text'>Deleted at: "+t.updateDate+"</p></div></li>";
+                    deleted += "<li><div class='title-part'><div><input type = 'checkbox' disabled><strike>"+t.task+"</strike></div><div class='trash-can'><i class='fas fa-trash-restore' onclick='recoverTask("+ind+")'></i><p class='date-text'>Deleted at: "+t.updateDate+"</p></div></div></li>";
                 }else if(t.isComplete == "true"){
-                    complete += "<li><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'></label><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></div><div class='trash-can'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><p class='date-text'>Completed at: "+t.updateDate+"</p></div></li>";
+                    complete += "<li><div class='title-part'><div class='overflow-titleC"+ind+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div><div class='trash-canC"+ind+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+", 1)'></i></div><p class='date-text'>Completed at: "+t.updateDate+"</p></div></div><div class='desc-partC"+ind+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div></div></li>";
                 }else{
-                    uncomplete += "<li><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'></label><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></div><div class='trash-can'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><p class='date-text'>Created at: "+t.updateDate+"</p></div></li>";
+                    uncomplete += "<li><div class='title-part'><div class='overflow-titleUn"+ind+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div><div class='trash-canUn"+ind+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+", 2)'></i></div><p class='date-text'>Created at: "+t.updateDate+"</p></div></div><div class='desc-partUn"+ind+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div></div></li>";
                 }
             }
         )
@@ -229,7 +243,7 @@ function addTask(){
                 }else{
                     isChecked = "";
                 }
-                all += "<li><div><input type='checkbox' onclick='changeStatus("+ind+");' "+isChecked+" id='taskA"+ind+"'><label for='taskA"+ind+"'></label><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></div><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i></li>";
+                all += "<li><div class='title-part'><div class='overflow-titleAll"+ind+" overflow-title'><input type='checkbox' onclick='changeStatus("+ind+");' "+isChecked+" id='taskA"+ind+"'><label for='taskA"+ind+"'><span>"+t.task+"</span></label></div><div class='trash-canAll"+ind+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+", 3)'></i></div></div></div><div class='desc-partAll"+ind+" desc-part'><div><input type='checkbox' onclick='changeStatus("+ind+");' "+isChecked+" id='taskA"+ind+"'><label for='taskA"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div></div></li>";
             }
         }
     );
