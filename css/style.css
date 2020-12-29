@@ -100,8 +100,8 @@ body {
 .grid-layout {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 1fr 2fr;
-      grid-template-columns: 1fr 2fr;
+  -ms-grid-columns: 33% 66%;
+      grid-template-columns: 33% 66%;
 
   height: 100vh;
 }
@@ -176,16 +176,27 @@ h3 {
   border-radius: 2px;
   box-shadow: 1px 2px 3px black;
   background-color: #2f2f2f;
+  /* display: flex;
+  justify-content: space-between;
+  align-items: center; */
+}
+
+.title-part {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.to-list li>div {
+.overflow-title{
   margin-right: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.desc-part {
+  max-height: 0;
+  overflow: hidden;
 }
 
 .date-text {
@@ -193,7 +204,12 @@ h3 {
 }
 
 .trash-can {
+  width: 55%;
   text-align: right;
+}
+
+.icons-sec i{
+  margin: 0 .25em;
 }
 
 input[type="checkbox"] {
@@ -209,10 +225,6 @@ input[type="checkbox"] + label {
   -moz-user-select: none;
   -ms-user-select: none;
   cursor: pointer;
-}
-
-.task-text {
-  margin-left: 35px;
 }
 
 input[type="checkbox"] + label:before {
