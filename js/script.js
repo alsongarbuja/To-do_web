@@ -118,11 +118,13 @@ document.onkeyup = function(e) {
     }
     // else if(e.altKey && e.key == 's'){
     //     selectTop();
-    // }else if(e.key == 'ArrowRight'){
-    //     slideDivision(1);
-    // }else if(e.key == 'ArrowLeft'){
-    //     slideDivision(-1);
-    // }else if(e.key == 'ArrowUp'){
+    // }
+    else if(e.key == 'ArrowRight'){
+        slideDivision(1);
+    }else if(e.key == 'ArrowLeft'){
+        slideDivision(-1);
+    }
+    // else if(e.key == 'ArrowUp'){
     //     navigateUpDown(-1);
     // }else if(e.key == 'ArrowDown'){
     //     navigateUpDown(1);
@@ -193,7 +195,7 @@ function expand(ind, list){
 
     if(col.style.maxHeight){
         col.style.maxHeight = null;
-        trashCan.style.width = "55%";
+        trashCan.style.width = "25%";
         overflowText.style.display = "block";
     }else{
         col.style.maxHeight = col.scrollHeight + "px";
