@@ -72,7 +72,7 @@ function add()
         render();
         listInput.focus();
 
-        document.querySelector(".active_division").scrollTop = document.querySelector(".active_division").scrollHeight;
+        document.querySelector(".active_division").children.item(1).scroll(0, document.querySelector(".active_division").children.item(1).scrollHeight);
         
         alertPop("#2E5AAC", "Added new Task");
     }
@@ -99,46 +99,63 @@ document.onkeyup = function(e) {
     // console.log(e.key);
     if (e.key == '+') {
         listInput.focus();
+        removeFocus();
     }else if (e.altKey && e.key == 'u') {
         removeActiveDiv();
         uCompleted.classList.add("active_division");
         activeIndex  = 0;
+        removeFocus();
     }else if(e.altKey && e.key == 'c') {
         removeActiveDiv();
         Completed.classList.add("active_division");
         activeIndex = 1;
+        removeFocus();
     }else if(e.altKey && e.key == 'a') {
         removeActiveDiv();
         allList.classList.add("active_division");
         activeIndex = 2;
+        removeFocus();
     }else if(e.altKey && e.key == 't'){
         removeActiveDiv();
         deletedList.classList.add("active_division");
         activeIndex = 3;
-    }
-    // else if(e.altKey && e.key == 's'){
-    //     selectTop();
-    // }
-    else if(e.key == 'ArrowRight'){
+        removeFocus();
+    }else if(e.altKey && e.key == 's'){
+        selectTop();
+    }else if(e.key == 'ArrowRight'){
         slideDivision(1);
+        removeFocus();
     }else if(e.key == 'ArrowLeft'){
         slideDivision(-1);
+        removeFocus();
+    }else if(e.key == 'ArrowUp'){
+        navigateUpDown(-1);
+    }else if(e.key == 'ArrowDown'){
+        navigateUpDown(1);
     }
-    // else if(e.key == 'ArrowUp'){
-    //     navigateUpDown(-1);
-    // }else if(e.key == 'ArrowDown'){
-    //     navigateUpDown(1);
-    // }
 };
 
 function selectTop(){
     var activeDiv = document.querySelector(".active_division");
 
     var activeUl = activeDiv.children.item(1);
-    var activeLi = activeUl.children.item(0).children.item(0);
+    var activeLi = activeUl.children.item(0);
 
-    activeLi.children.item(0).focus();
+    activeLi.style.boxShadow = "1px 6px 30px black";
 }
+
+function removeFocus(){
+    var totalLi = document.querySelector(".active_division").children.item(1).childElementCount;
+    var activeUl = document.querySelector(".active_division").children.item(1);
+    
+    for(var i = 0; i < totalLi; i++){
+        activeUl.children.item(i).style.boxShadow = "1px 2px 3px black";
+    }
+
+    listIndex = 0;
+}
+
+document.addEventListener('click', removeFocus);
 
 var listIndex = 0;
 
@@ -156,7 +173,19 @@ function navigateUpDown(val){
         listIndex = totalLi-1;
     }
 
-    activeUl.children.item(listIndex).children.item(0).children.item(0).focus();
+    activeUl.children.item(listIndex).style.boxShadow = "1px 6px 30px black";
+
+    if(listIndex == totalLi-1 && val == -1)
+        activeUl.children.item(0).style.boxShadow = "1px 2px 3px black";
+    else if(listIndex == 0 && val == 1)
+        activeUl.children.item(totalLi-1).style.boxShadow = "1px 2px 3px black";
+    else
+        activeUl.children.item(listIndex-val).style.boxShadow = "1px 2px 3px black";
+
+    if(listIndex != 0)
+        activeUl.scroll(0, activeUl.children.item(listIndex).offsetTop-500);
+    else
+        activeUl.scroll(0,0);
 }
 
 
@@ -195,7 +224,7 @@ function expand(ind, list){
 
     if(col.style.maxHeight){
         col.style.maxHeight = null;
-        trashCan.style.width = "25%";
+        trashCan.style.width = "35%";
         overflowText.style.display = "block";
     }else{
         col.style.maxHeight = col.scrollHeight + "px";
