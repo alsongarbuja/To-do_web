@@ -13,22 +13,28 @@ var divisions = document.getElementsByClassName("lists_division");
 var alertDiv = document.querySelector(".alert-popup");
 var crossMark = document.querySelector(".cross-mark");
 
+// Starting the index for task indexing
 if(!localStorage.getItem("index")){
     localStorage.setItem("index", "0");
 }
 
+//removes the active_division class from every lists
 function removeActiveDiv(){
     for(var i = 0; i < divisions.length; i++){
         divisions[i].classList.remove("active_division");
     }
 }
 
+//add event listener in the alert popup cross mark
 crossMark.addEventListener('click', closeAlert);
 
+// closes the alert pop up
 function closeAlert(){
     alertDiv.style.display = "none";
 }
 
+// defines the background color and message to show on the alert popup
+// also shows the pop up for 5 sec
 function alertPop(color, mssg){
     alertDiv.children.item(0).innerHTML = mssg;
     alertDiv.style.backgroundColor = color;
@@ -39,6 +45,7 @@ function alertPop(color, mssg){
     }, 5000);
 }
 
+// defining index from localstorage and definig date too
 var index = localStorage.getItem("index");
 var date = new Date();
 
@@ -48,11 +55,13 @@ function add()
     // the code runs only if the input has some values or text in it
     if(listInput.value)
     {
+        //add task in localstorage
         localStorage.setItem("task"+index, listInput.value);
         localStorage.setItem("isCompleted"+index, false);
         localStorage.setItem("updateDate"+index, date);
         localStorage.setItem("isDeleted"+index, false);
 
+        //then push the task to the tasks array
         tasks.push(
             {
                 task: localStorage.getItem("task"+index),
@@ -62,8 +71,6 @@ function add()
             }
         );
 
-        // console.log(tasks);
-
         index++;
         localStorage.setItem("index", index);
             
@@ -72,17 +79,30 @@ function add()
         render();
         listInput.focus();
 
+        // scrolling to the latest added task automatically
         document.querySelector(".active_division").children.item(1).scroll(0, document.querySelector(".active_division").children.item(1).scrollHeight);
         
         alertPop("#2E5AAC", "Added new Task");
     }
 };
 
+//add the tasks from localstorage to tasks array on startup
 function pushTask(){
     tasks = [];
 
     for(let i = 0; i < index; i++){
-        if(localStorage.getItem("task"+i) != null){
+        // if the task have been automatically deleted after 15 days
+        // push the task to the tasks array with null values
+        if(localStorage.getItem("task"+i) == null){
+            tasks.push(
+                {
+                    task: localStorage.getItem("task"+i),
+                    isComplete: localStorage.getItem("isCompleted"+i),
+                    updateDate: null,
+                    isDeleted: localStorage.getItem("isDeleted"+i)
+                }
+            );
+        }else{
             tasks.push(
                 {
                     task: localStorage.getItem("task"+i),
@@ -95,46 +115,7 @@ function pushTask(){
     }
 }
 
-document.onkeyup = function(e) {
-    // console.log(e.key);
-    if (e.key == '+') {
-        listInput.focus();
-        removeFocus();
-    }else if (e.altKey && e.key == 'u') {
-        removeActiveDiv();
-        uCompleted.classList.add("active_division");
-        activeIndex  = 0;
-        removeFocus();
-    }else if(e.altKey && e.key == 'c') {
-        removeActiveDiv();
-        Completed.classList.add("active_division");
-        activeIndex = 1;
-        removeFocus();
-    }else if(e.altKey && e.key == 'a') {
-        removeActiveDiv();
-        allList.classList.add("active_division");
-        activeIndex = 2;
-        removeFocus();
-    }else if(e.altKey && e.key == 't'){
-        removeActiveDiv();
-        deletedList.classList.add("active_division");
-        activeIndex = 3;
-        removeFocus();
-    }else if(e.altKey && e.key == 's'){
-        selectTop();
-    }else if(e.key == 'ArrowRight'){
-        slideDivision(1);
-        removeFocus();
-    }else if(e.key == 'ArrowLeft'){
-        slideDivision(-1);
-        removeFocus();
-    }else if(e.key == 'ArrowUp'){
-        navigateUpDown(-1);
-    }else if(e.key == 'ArrowDown'){
-        navigateUpDown(1);
-    }
-};
-
+//function to select the top task of the current active list
 function selectTop(){
     var activeDiv = document.querySelector(".active_division");
 
@@ -144,6 +125,7 @@ function selectTop(){
     activeLi.style.boxShadow = "1px 6px 30px black";
 }
 
+// remove the focus from the previously selected task when navigating
 function removeFocus(){
     var totalLi = document.querySelector(".active_division").children.item(1).childElementCount;
     var activeUl = document.querySelector(".active_division").children.item(1);
@@ -155,8 +137,10 @@ function removeFocus(){
     listIndex = 0;
 }
 
+// remove the focus from the previously selected task when clicking on the window elsewhere
 document.addEventListener('click', removeFocus);
 
+// function to navigate the list
 var listIndex = 0;
 
 function navigateUpDown(val){
@@ -196,6 +180,7 @@ listInput.addEventListener("keydown", function(event){
     }
 });
 
+// remove input values and focus from the input when alt and - is entered
 listInput.onkeyup = function(event){
     if(event.altKey && event.key == '-'){
         listInput.value = "";
@@ -203,8 +188,7 @@ listInput.onkeyup = function(event){
     }
 }
 
-var col = document.getElementsByClassName("desc-part");
-
+// function to expand the task tiles
 function expand(ind, list){
     var col, overflowText, trashCan;
 
@@ -245,12 +229,15 @@ function render()
         tasks.forEach(
             function(t, ind)
             {
-                if(t.isDeleted == "true"){
-                    deleted += "<li><div class='title-part'><div><input type = 'checkbox' disabled><strike>"+t.task+"</strike></div><div class='trash-can'><i class='fas fa-trash-restore' onclick='recoverTask("+ind+")'></i><p class='date-text'>Deleted at: "+t.updateDate+"</p></div></div></li>";
-                }else if(t.isComplete == "true"){
-                    complete += "<li><div class='title-part'><div class='overflow-titleC"+ind+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div><div class='trash-canC"+ind+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+", 1)'></i></div><p class='date-text'>Completed at: "+t.updateDate+"</p></div></div><div class='desc-partC"+ind+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div></div></li>";
-                }else{
-                    uncomplete += "<li><div class='title-part'><div class='overflow-titleUn"+ind+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div><div class='trash-canUn"+ind+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+", 2)'></i></div><p class='date-text'>Created at: "+t.updateDate+"</p></div></div><div class='desc-partUn"+ind+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div></div></li>";
+                // only if the task is not null
+                if(t.task != null){
+                    if(t.isDeleted == "true"){
+                        deleted += "<li><div class='title-part'><div><input type = 'checkbox' disabled><strike>"+t.task+"</strike></div><div class='trash-can'><i class='fas fa-trash-restore' onclick='recoverTask("+ind+")'></i><p class='date-text'>Deleted at: "+t.updateDate+"</p></div></div></li>";
+                    }else if(t.isComplete == "true"){
+                        complete += "<li><div class='title-part'><div class='overflow-titleC"+ind+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div><div class='trash-canC"+ind+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+", 1)'></i></div><p class='date-text'>Completed at: "+t.updateDate+"</p></div></div><div class='desc-partC"+ind+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div></div></li>";
+                    }else{
+                        uncomplete += "<li><div class='title-part'><div class='overflow-titleUn"+ind+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div><div class='trash-canUn"+ind+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+", 2)'></i></div><p class='date-text'>Created at: "+t.updateDate+"</p></div></div><div class='desc-partUn"+ind+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div></div></li>";
+                    }
                 }
             }
         )
@@ -262,6 +249,7 @@ function render()
     addTask();
 };
 
+// render all the tasks except deleted ones in the all to do's list
 function addTask(){
     var isChecked = "";
     var all = "";
@@ -306,6 +294,7 @@ function changeStatus(ind)
     alertPop(color, mssg);
 };
 
+// mark the task as deleted
 function deleteTask(ind)
 {
     tasks[ind].isDeleted = "true";
@@ -319,6 +308,7 @@ function deleteTask(ind)
     alertPop("#DA1414", "Task Deleted");
 }
 
+//recovers the task from deleted list
 function recoverTask(ind)
 {
     tasks[ind].isDeleted = "false";
@@ -332,6 +322,7 @@ function recoverTask(ind)
     alertPop("#FF8F39", "Task Recovered");
 }
 
+//permanently deletes the deleted data which is in deleted section for more than 15 days 
 function deleteTaskPermanently(){
     var newDate = new Date();
 
@@ -347,6 +338,7 @@ function deleteTaskPermanently(){
     }
 }
 
+//navigate through the lists
 var activeIndex = 0;
 
 function slideDivision(pressedBtn){
@@ -373,3 +365,44 @@ document.getElementsByClassName("left-arrow")[0].addEventListener('click', funct
 document.getElementsByClassName("right-arrow")[0].addEventListener('click', function(){
     slideDivision(1);
 });
+
+// key bind functions
+document.onkeyup = function(e) {
+    // console.log(e.key);
+    if (e.key == '+') {
+        listInput.focus();
+        removeFocus();
+    }else if (e.altKey && e.key == 'u') {
+        removeActiveDiv();
+        uCompleted.classList.add("active_division");
+        activeIndex  = 0;
+        removeFocus();
+    }else if(e.altKey && e.key == 'c') {
+        removeActiveDiv();
+        Completed.classList.add("active_division");
+        activeIndex = 1;
+        removeFocus();
+    }else if(e.altKey && e.key == 'a') {
+        removeActiveDiv();
+        allList.classList.add("active_division");
+        activeIndex = 2;
+        removeFocus();
+    }else if(e.altKey && e.key == 't'){
+        removeActiveDiv();
+        deletedList.classList.add("active_division");
+        activeIndex = 3;
+        removeFocus();
+    }else if(e.altKey && e.key == 's'){
+        selectTop();
+    }else if(e.key == 'ArrowRight'){
+        slideDivision(1);
+        removeFocus();
+    }else if(e.key == 'ArrowLeft'){
+        slideDivision(-1);
+        removeFocus();
+    }else if(e.key == 'ArrowUp'){
+        navigateUpDown(-1);
+    }else if(e.key == 'ArrowDown'){
+        navigateUpDown(1);
+    }
+};
