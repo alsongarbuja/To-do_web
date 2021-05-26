@@ -13,10 +13,24 @@ var divisions = document.getElementsByClassName("lists_division");
 var alertDiv = document.querySelector(".alert-popup");
 var crossMark = document.querySelector(".cross-mark");
 
+var sortBtn = document.querySelector("#sort-button");
+
 // Starting the index for task indexing
 if(!localStorage.getItem("index")){
     localStorage.setItem("index", "0");
 }
+
+function openSortMenu()
+{
+    document.querySelector('.sort-menu').style.display = "block";
+}
+
+function closeSortMenu()
+{
+    document.querySelector('.sort-menu').style.display = "none";
+}
+
+sortBtn.addEventListener('click', openSortMenu);
 
 //removes the active_division class from every lists
 function removeActiveDiv(){

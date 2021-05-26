@@ -110,6 +110,17 @@ body {
   position: relative;
 }
 
+.list_field>p {
+  float: right;
+  background-color: #494949a9;
+  color: #e2e2e2;
+  padding: .75em;
+  margin-top: 1em;
+  margin-right: 3em;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 .lists_division {
   padding: 30px;
   display: none;
@@ -117,6 +128,66 @@ body {
 
 .active_division {
   display: block;
+}
+
+.sort-menu {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  top: 50%;
+  left: 60%;
+  width: 25%;
+  transform: translate(-50%, -60%);
+  background-color: #fff;
+  color: #2f2f2f;
+  padding: 1em 2em;
+  border-radius: 5px;
+}
+
+.sort-menu--close {
+  /* padding: .5em 1em; */
+  text-align: right;
+  /* float: right; */
+  font-size: 1.5rem;
+}
+
+.sort-menu--close span {
+  cursor: pointer;
+}
+
+.sort-menu--body h4 {
+  padding: 0 0 .5em 0;
+}
+
+.sort-menu--body hr {
+  height: 1px;
+  background-color: #000;
+  border: none;
+}
+
+.sort-type--holder, .sort-order--holder {
+  padding: 1.5em 0;
+}
+
+.sort-menu--body span {
+  padding: .5em 1em;
+  border-radius: 20px;
+  background-color: #000000a4;
+  color: #fff;
+  cursor: pointer;
+}
+
+.sort-save--div {
+  text-align: right;
+}
+
+.sort-save--button {
+  background-color: #252525;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: .5em 1em;
+  cursor: pointer;
 }
 
 .list{
@@ -148,7 +219,7 @@ body {
 /*
 but we don't need it here for now
 */
-.lists_division, .add_field{
+.lists_division, .add_field, .list_field{
   color: white;
 }
 
@@ -318,5 +389,11 @@ input[type="checkbox"]:checked + label:before {
   .details-popup {
     left: 50%;
     width: 70%;
+  }
+
+  .sort-menu {
+    left: 50%;
+    width: 70%;
+    transform: translateX(-50%);
   }
 }
