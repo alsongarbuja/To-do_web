@@ -45,9 +45,8 @@ function alertPop(color, mssg){
     }, 5000);
 }
 
-// defining index from localstorage and definig date too
+// defining index from localstorage
 var index = localStorage.getItem("index");
-var date = new Date();
 
 /* add the task to the task array and call function render() when the plus is clicked*/
 function add()
@@ -56,20 +55,18 @@ function add()
     if(listInput.value)
     {
         //add task in localstorage
-        localStorage.setItem("task"+index, listInput.value);
-        localStorage.setItem("isCompleted"+index, false);
-        localStorage.setItem("updateDate"+index, date);
-        localStorage.setItem("isDeleted"+index, false);
+        var newTask = {
+            'name': listInput.value, 
+            'isCompleted': false,
+            'updateDate': Date().slice(4, 21),
+            'isDeleted': false
+        };
+        localStorage.setItem("task"+index, JSON.stringify(newTask));
 
         //then push the task to the tasks array
-        tasks.push(
-            {
-                task: localStorage.getItem("task"+index),
-                isComplete: localStorage.getItem("isCompleted"+index),
-                updateDate: localStorage.getItem("updateDate"+index).slice(4,21),
-                isDeleted: localStorage.getItem("isDeleted"+index)
-            }
-        );
+        tasks.push(JSON.parse(localStorage.getItem("task"+index)));
+
+        console.log(tasks);
 
         index++;
         localStorage.setItem("index", index);
@@ -88,30 +85,8 @@ function add()
 
 //add the tasks from localstorage to tasks array on startup
 function pushTask(){
-    tasks = [];
-
     for(let i = 0; i < index; i++){
-        // if the task have been automatically deleted after 15 days
-        // push the task to the tasks array with null values
-        if(localStorage.getItem("task"+i) == null){
-            tasks.push(
-                {
-                    task: localStorage.getItem("task"+i),
-                    isComplete: localStorage.getItem("isCompleted"+i),
-                    updateDate: null,
-                    isDeleted: localStorage.getItem("isDeleted"+i)
-                }
-            );
-        }else{
-            tasks.push(
-                {
-                    task: localStorage.getItem("task"+i),
-                    isComplete: localStorage.getItem("isCompleted"+i),
-                    updateDate: localStorage.getItem("updateDate"+i).slice(4, 21),
-                    isDeleted: localStorage.getItem("isDeleted"+i)
-                }
-            );
-        }
+        tasks.push(JSON.parse(localStorage.getItem("task"+i)));
     }
 }
 
@@ -225,22 +200,18 @@ function render()
     var deleted = "";
     
     // "<li><div class='title-part'><div class='overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'></label><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></div><div class='trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+")'></i></div><p class='date-text'>Completed at: "+t.updateDate+"</p></div></div><div class='desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'></label><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></div></div></li>"
-
-        tasks.forEach(
-            function(t, ind)
-            {
-                // only if the task is not null
-                if(t.task != null){
-                    if(t.isDeleted == "true"){
-                        deleted += "<li><div class='title-part'><div><input type = 'checkbox' disabled><strike>"+t.task+"</strike></div><div class='trash-can'><i class='fas fa-trash-restore' onclick='recoverTask("+ind+")'></i><p class='date-text'>Deleted at: "+t.updateDate+"</p></div></div></li>";
-                    }else if(t.isComplete == "true"){
-                        complete += "<li><div class='title-part'><div class='overflow-titleC"+ind+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div><div class='trash-canC"+ind+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+", 1)'></i></div><p class='date-text'>Completed at: "+t.updateDate+"</p></div></div><div class='desc-partC"+ind+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' checked id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div></div></li>";
-                    }else{
-                        uncomplete += "<li><div class='title-part'><div class='overflow-titleUn"+ind+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div><div class='trash-canUn"+ind+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+", 2)'></i></div><p class='date-text'>Created at: "+t.updateDate+"</p></div></div><div class='desc-partUn"+ind+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+ind+");' id='task"+ind+"'><label for='task"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div></div></li>";
-                    }
+        for (var prop in tasks)
+        {
+            if(tasks[prop] != null){
+                if(tasks[prop].isDeleted){
+                    deleted += "<li><div class='title-part'><div><input type = 'checkbox' disabled><strike>"+tasks[prop].name+"</strike></div><div class='trash-can'><i class='fas fa-trash-restore' onclick='changeState("+prop+")'></i><p class='date-text'>Deleted at: "+tasks[prop].updateDate+"</p></div></div></li>";
+                }else if(tasks[prop].isComplete){
+                    complete += "<li><div class='title-part'><div class='overflow-titleC"+prop+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+prop+");' checked id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div><div class='trash-canC"+prop+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='changeState("+prop+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+prop+", 1)'></i></div><p class='date-text'>Completed at: "+tasks[prop].updateDate+"</p></div></div><div class='desc-partC"+prop+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+prop+");' checked id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div></div></li>";
+                }else{
+                    uncomplete += "<li><div class='title-part'><div class='overflow-titleUn"+prop+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+prop+");' id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div><div class='trash-canUn"+prop+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='changeState("+prop+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+prop+", 2)'></i></div><p class='date-text'>Created at: "+tasks[prop].updateDate+"</p></div></div><div class='desc-partUn"+prop+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+prop+");' id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div></div></li>";
                 }
             }
-        )
+        }
 
         unCompletedUlList.innerHTML = uncomplete;
         completedUlList.innerHTML = complete;
@@ -254,18 +225,19 @@ function addTask(){
     var isChecked = "";
     var all = "";
 
-    tasks.forEach(
-        function(t, ind){
-            if(t.isDeleted == "false"){
-                if(t.isComplete == "true"){
+    for (var prop in tasks) 
+    {
+        if(tasks[prop] != null){
+            if(!tasks[prop].isDeleted){
+                if(tasks[prop].isComplete){
                     isChecked = "checked";
                 }else{
                     isChecked = "";
                 }
-                all += "<li><div class='title-part'><div class='overflow-titleAll"+ind+" overflow-title'><input type='checkbox' onclick='changeStatus("+ind+");' "+isChecked+" id='taskA"+ind+"'><label for='taskA"+ind+"'><span>"+t.task+"</span></label></div><div class='trash-canAll"+ind+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='deleteTask("+ind+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+ind+", 3)'></i></div></div></div><div class='desc-partAll"+ind+" desc-part'><div><input type='checkbox' onclick='changeStatus("+ind+");' "+isChecked+" id='taskA"+ind+"'><label for='taskA"+ind+"'><span class='task-text' onclick='showDetails("+ind+")'>"+t.task+"</span></label></div></div></li>";
+                all += "<li><div class='title-part'><div class='overflow-titleAll"+prop+" overflow-title'><input type='checkbox' onclick='changeStatus("+prop+");' "+isChecked+" id='taskA"+prop+"'><label for='taskA"+prop+"'><span>"+tasks[prop].name+"</span></label></div><div class='trash-canAll"+prop+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='changeState("+prop+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+prop+", 3)'></i></div></div></div><div class='desc-partAll"+prop+" desc-part'><div><input type='checkbox' onclick='changeStatus("+prop+");' "+isChecked+" id='taskA"+prop+"'><label for='taskA"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div></div></li>";
             }
         }
-    );
+    }
 
     allListUl.innerHTML = all;
 }
@@ -275,51 +247,56 @@ function changeStatus(ind)
 {
     var mssg = "", color = "";
 
-    if(tasks[ind].isComplete == "true"){
-        tasks[ind].isComplete = "false";
+    if(tasks[ind].isComplete){
+        tasks[ind].isComplete = false;
         mssg = "Removed task from completed list";
         color = "#B95000";
     }else{
-        tasks[ind].isComplete = "true";
+        tasks[ind].isComplete = true;
         mssg = "Added task to completed list";
         color = "#287D3C";
     }
 
     tasks[ind].updateDate = Date().slice(4, 21);
-    localStorage.setItem("updateDate"+ind, Date());
-    localStorage.setItem("isCompleted"+ind, tasks[ind].isComplete);
+    var oldData = JSON.parse(localStorage.getItem("task"+ind));
+
+    oldData.updateDate = Date().slice(4, 21);
+    oldData.isComplete = tasks[ind].isComplete;
+
+    localStorage.setItem("task"+ind, JSON.stringify(oldData));
 
     render();
 
     alertPop(color, mssg);
 };
 
-// mark the task as deleted
-function deleteTask(ind)
+// delete or recover task
+function changeState(ind)
 {
-    tasks[ind].isDeleted = "true";
-    localStorage.setItem("isDeleted"+ind, true);
+    var color = "", mssg = "";
+
+    if(tasks[ind].isDeleted){
+        tasks[ind].isDeleted = false;
+        color = "#FF8F39";
+        mssg = "Task Recovered";
+    }else{
+        tasks[ind].isDeleted = true;
+        color = "#DA1414";
+        mssg = "Task Deleted";
+    }
 
     tasks[ind].updateDate = Date().slice(4,21);
-    localStorage.setItem("updateDate"+ind, Date());
+
+    var oldData = JSON.parse(localStorage.getItem("task"+ind));
+
+    oldData.updateDate = tasks[ind].updateDate;
+    oldData.isDeleted = tasks[ind].isDeleted;
+
+    localStorage.setItem("task"+ind, JSON.stringify(oldData));
 
     render();
 
-    alertPop("#DA1414", "Task Deleted");
-}
-
-//recovers the task from deleted list
-function recoverTask(ind)
-{
-    tasks[ind].isDeleted = "false";
-    localStorage.setItem("isDeleted"+ind, false);
-
-    tasks[ind].updateDate = Date().slice(4,21);
-    localStorage.setItem("updateDate"+ind, Date());
-
-    render();
-
-    alertPop("#FF8F39", "Task Recovered");
+    alertPop(color, mssg);
 }
 
 //permanently deletes the deleted data which is in deleted section for more than 15 days 
@@ -327,12 +304,12 @@ function deleteTaskPermanently(){
     var newDate = new Date();
 
     for(let i = 0; i < index; i++){
-        if(localStorage.getItem("isDeleted"+i) == "true"){
-            if(((Date.parse(newDate) - Date.parse(localStorage.getItem("updateDate"+i))) / (1000*60*60*24)) >= 15){
-                localStorage.removeItem("task"+i);
-                localStorage.removeItem("isCompleted"+i);
-                localStorage.removeItem("updateDate"+i);
-                localStorage.removeItem("isDeleted"+i);
+        var task = JSON.parse(localStorage.getItem("task"+i));
+        if(task != null){
+            if(task.isDeleted){
+                if(((Date.parse(newDate) - Date.parse(task.updateDate)) / (1000*60*60*24)) >= 15){
+                    localStorage.removeItem("task"+i);
+                }
             }
         }
     }
