@@ -23,11 +23,13 @@ if(!localStorage.getItem("index")){
 function openSortMenu()
 {
     document.querySelector('.sort-menu').style.display = "block";
+    document.querySelector('.sort-menu--bg').style.display = "block";
 }
 
 function closeSortMenu()
 {
     document.querySelector('.sort-menu').style.display = "none";
+    document.querySelector('.sort-menu--bg').style.display = "none";
 }
 
 sortBtn.addEventListener('click', openSortMenu);

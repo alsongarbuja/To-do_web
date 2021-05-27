@@ -121,6 +121,10 @@ body {
   cursor: pointer;
 }
 
+.list_field>p:hover {
+  background-color: #2f2f2f;
+}
+
 .lists_division {
   padding: 30px;
   display: none;
@@ -130,18 +134,35 @@ body {
   display: block;
 }
 
+.sort-menu--bg {
+  display: none;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.178);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
 .sort-menu {
   display: none;
   position: fixed;
   z-index: 2;
   top: 50%;
-  left: 60%;
+  left: 50%;
   width: 25%;
-  transform: translate(-50%, -60%);
+  transform: translate(-50%, -50%);
   background-color: #fff;
   color: #2f2f2f;
   padding: 1em 2em;
   border-radius: 5px;
+}
+
+.sort-menu--active {
+  display: block;
+  opacity: 1;
+  transition: all 300ms ease-in-out;
 }
 
 .sort-menu--close {
@@ -352,6 +373,12 @@ input[type="checkbox"]:checked + label:before {
   opacity: 0.8;
 }
 
+@media screen and (max-width: 900px) {
+  .sort-menu {
+    width: 50%;
+  }
+}
+
 @media screen and (max-width: 700px){
   @keyframes fromUp {
     0% {
@@ -390,10 +417,24 @@ input[type="checkbox"]:checked + label:before {
     left: 50%;
     width: 70%;
   }
+}
 
+@media screen and (max-width: 500px) {
   .sort-menu {
-    left: 50%;
-    width: 70%;
-    transform: translateX(-50%);
+    width: 100%;
+    top: 80%;
+    height: fit-content;
+    animation: popFromBottom .5s ease-in-out;
+  }
+
+  @keyframes popFromBottom {
+    0% {
+      opacity: 0;
+      top: 120%;
+    }
+    100% {
+      opacity: 1;
+      top: 80%;
+    }
   }
 }

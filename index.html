@@ -15,6 +15,33 @@
         <p>Task added to completed list</p>
         <span class="cross-mark">&times;</span>
     </div>
+    <div class="sort-menu--bg"></div>
+    <div class="sort-menu">
+        <div class="sort-menu--close">
+            <span onclick="closeSortMenu()">&times;</span>
+        </div>
+        <div class="sort-menu--body">
+            <div class="sort-type--div">
+                <h4>Sort By</h4>
+                <hr>
+                <div class="sort-type--holder">
+                    <span class="sort-type--tag">Task</span>
+                    <span class="sort-type--tag" style="background-color: #FFBF00;">Date</span>
+                </div>
+            </div>
+            <div class="sort-order--div">
+                <h4>Order In</h4>
+                <hr>
+                <div class="sort-order--holder">
+                    <span class="sort-order--tag" style="background-color: #FFBF00;">Ascending</span>
+                    <span class="sort-order--tag">Descending</span>
+                </div>
+            </div>
+        </div>
+        <div class="sort-save--div">
+            <button class="sort-save--button">Save</button>
+        </div>
+    </div>
     <div class="grid-layout">
         <div class="add_field">
             <div class="add_input">
@@ -39,32 +66,6 @@
             </div>
         </div>
         <div class="list_field">
-            <div class="sort-menu">
-                <div class="sort-menu--close">
-                    <span onclick="closeSortMenu()">&times;</span>
-                </div>
-                <div class="sort-menu--body">
-                    <div class="sort-type--div">
-                        <h4>Sort By</h4>
-                        <hr>
-                        <div class="sort-type--holder">
-                            <span class="sort-type--tag">Task</span>
-                            <span class="sort-type--tag" style="background-color: #FFBF00;">Date</span>
-                        </div>
-                    </div>
-                    <div class="sort-order--div">
-                        <h4>Order</h4>
-                        <hr>
-                        <div class="sort-order--holder">
-                            <span class="sort-order--tag" style="background-color: #FFBF00;">Ascending</span>
-                            <span class="sort-order--tag">Descending</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="sort-save--div">
-                    <button class="sort-save--button">Save</button>
-                </div>
-            </div>
             <p id="sort-button">Sort &nbsp; &#8645;</p>
             <div class="lists_division active_division uncompleted">
                 <h3>TO DO</h3>
