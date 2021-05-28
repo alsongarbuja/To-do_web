@@ -14,6 +14,7 @@ var alertDiv = document.querySelector(".alert-popup");
 var crossMark = document.querySelector(".cross-mark");
 
 var sortBtn = document.querySelector("#sort-button");
+var sortSave = document.querySelector('.sort-save--button');
 
 // Starting the index for task indexing
 if(!localStorage.getItem("index")){
@@ -32,7 +33,70 @@ function closeSortMenu()
     document.querySelector('.sort-menu--bg').style.display = "none";
 }
 
+function sortTaskList(type, firstOpen)
+{
+    var sortMethod = localStorage.getItem('sortMethod');
+
+    if(type != sortMethod || firstOpen){
+        if(type == 'task'){
+            tasks.sort(function (a, b){
+                let task1 = a.name.toLowerCase();
+                let task2 = b.name.toLowerCase();
+    
+                if(task1 < task2){
+                    return -1;
+                }
+    
+                if(task1 > task2){
+                    return 1;
+                }
+    
+                return 0;
+            });
+        }else if(type == 'date'){
+            tasks.sort(function (a, b){
+                let task1 = a.updateDate.toLowerCase();
+                let task2 = b.updateDate.toLowerCase();
+    
+                if(task1 < task2){
+                    return 1;
+                }
+    
+                if(task1 > task2){
+                    return -1;
+                }
+    
+                return 0;
+            });
+        }else{
+            alertPop('#DA1414', "Couldn't sort at the moment!")
+        }
+    
+        localStorage.setItem('sortMethod', type);
+    }
+
+    render();
+}
+
+function sortTask()
+{
+    const rbTypes =  document.querySelectorAll('input[name="sortType"]');
+    let selectedType;
+
+    for (const rbType of rbTypes){
+        if(rbType.checked){
+            selectedType = rbType.value;
+            break;
+        }
+    }
+
+    sortTaskList(selectedType, false);
+
+    closeSortMenu();
+}
+
 sortBtn.addEventListener('click', openSortMenu);
+sortSave.addEventListener('click', sortTask);
 
 //removes the active_division class from every lists
 function removeActiveDiv(){
@@ -99,10 +163,22 @@ function add()
     }
 };
 
-//add the tasks from localstorage to tasks array on startup
+//add the tasks from localstorage to tasks array on startup while sorting
 function pushTask(){
+
+    var sortWay = localStorage.getItem('sortMethod');
+
     for(let i = 0; i < index; i++){
         tasks.push(JSON.parse(localStorage.getItem("task"+i)));
+    }
+
+    if(sortWay != null){
+        if(sortWay == 'task')
+            document.querySelector('#taskType').checked = true;
+        if(sortWay == 'date')
+            document.querySelector('#dateType').checked = true;
+
+        sortTaskList(sortWay, true);
     }
 }
 

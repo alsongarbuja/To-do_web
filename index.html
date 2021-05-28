@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <script defer type="text/javascript" src="./js/script.js"></script>
 </head>
-<body onload="deleteTaskPermanently(); pushTask(); render();">
+<body onload="deleteTaskPermanently(); pushTask();">
     <div class="alert-popup">
         <p>Task added to completed list</p>
         <span class="cross-mark">&times;</span>
@@ -25,16 +25,10 @@
                 <h4>Sort By</h4>
                 <hr>
                 <div class="sort-type--holder">
-                    <span class="sort-type--tag">Task</span>
-                    <span class="sort-type--tag" style="background-color: #FFBF00;">Date</span>
-                </div>
-            </div>
-            <div class="sort-order--div">
-                <h4>Order In</h4>
-                <hr>
-                <div class="sort-order--holder">
-                    <span class="sort-order--tag" style="background-color: #FFBF00;">Ascending</span>
-                    <span class="sort-order--tag">Descending</span>
+                    <input type="radio" name="sortType" id="taskType" value="task">
+                    <label for="taskType" class="sort-type--tag">Alphabetical Order</label>
+                    <input type="radio" name="sortType" id="dateType" value="date">
+                    <label for="dateType" class="sort-type--tag">Last add</label>
                 </div>
             </div>
         </div>
