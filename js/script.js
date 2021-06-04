@@ -136,6 +136,7 @@ function add()
     {
         //add task in localstorage
         var newTask = {
+            'id': index,
             'name': listInput.value, 
             'isCompleted': false,
             'updateDate': Date().slice(4, 21),
@@ -143,17 +144,13 @@ function add()
         };
         localStorage.setItem("task"+index, JSON.stringify(newTask));
 
-        //then push the task to the tasks array
-        tasks.push(JSON.parse(localStorage.getItem("task"+index)));
-
-        console.log(tasks);
-
         index++;
         localStorage.setItem("index", index);
-            
+
+        pushTask();
+
         // after the list is pushed in the array then the input will be erased itself
         listInput.value = "";
-        render();
         listInput.focus();
 
         // scrolling to the latest added task automatically
@@ -167,6 +164,8 @@ function add()
 function pushTask(){
 
     var sortWay = localStorage.getItem('sortMethod');
+
+    tasks = [];
 
     for(let i = 0; i < index; i++){
         tasks.push(JSON.parse(localStorage.getItem("task"+i)));
@@ -296,11 +295,11 @@ function render()
         {
             if(tasks[prop] != null){
                 if(tasks[prop].isDeleted){
-                    deleted += "<li><div class='title-part'><div><input type = 'checkbox' disabled><strike>"+tasks[prop].name+"</strike></div><div class='trash-can'><i class='fas fa-trash-restore' onclick='changeState("+prop+")'></i><p class='date-text'>Deleted at: "+tasks[prop].updateDate+"</p></div></div></li>";
+                    deleted += "<li><div class='title-part'><div><input type = 'checkbox' disabled><strike>"+tasks[prop].name+"</strike></div><div class='trash-can'><i class='fas fa-trash-restore' onclick='changeState("+tasks[prop].id+")'></i><p class='date-text'>Deleted at: "+tasks[prop].updateDate+"</p></div></div></li>";
                 }else if(tasks[prop].isComplete){
-                    complete += "<li><div class='title-part'><div class='overflow-titleC"+prop+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+prop+");' checked id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div><div class='trash-canC"+prop+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='changeState("+prop+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+prop+", 1)'></i></div><p class='date-text'>Completed at: "+tasks[prop].updateDate+"</p></div></div><div class='desc-partC"+prop+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+prop+");' checked id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div></div></li>";
+                    complete += "<li><div class='title-part'><div class='overflow-titleC"+prop+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+tasks[prop].id+");' checked id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div><div class='trash-canC"+prop+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='changeState("+tasks[prop].id+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+prop+", 1)'></i></div><p class='date-text'>Completed at: "+tasks[prop].updateDate+"</p></div></div><div class='desc-partC"+prop+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+tasks[prop].id+");' checked id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div></div></li>";
                 }else{
-                    uncomplete += "<li><div class='title-part'><div class='overflow-titleUn"+prop+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+prop+");' id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div><div class='trash-canUn"+prop+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='changeState("+prop+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+prop+", 2)'></i></div><p class='date-text'>Created at: "+tasks[prop].updateDate+"</p></div></div><div class='desc-partUn"+prop+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+prop+");' id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div></div></li>";
+                    uncomplete += "<li><div class='title-part'><div class='overflow-titleUn"+prop+" overflow-title'><input type = 'checkbox' onclick = 'changeStatus("+tasks[prop].id+");' id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div><div class='trash-canUn"+prop+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='changeState("+tasks[prop].id+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+prop+", 2)'></i></div><p class='date-text'>Created at: "+tasks[prop].updateDate+"</p></div></div><div class='desc-partUn"+prop+" desc-part'><div><input type = 'checkbox' onclick = 'changeStatus("+tasks[prop].id+");' id='task"+prop+"'><label for='task"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div></div></li>";
                 }
             }
         }
@@ -326,7 +325,7 @@ function addTask(){
                 }else{
                     isChecked = "";
                 }
-                all += "<li><div class='title-part'><div class='overflow-titleAll"+prop+" overflow-title'><input type='checkbox' onclick='changeStatus("+prop+");' "+isChecked+" id='taskA"+prop+"'><label for='taskA"+prop+"'><span>"+tasks[prop].name+"</span></label></div><div class='trash-canAll"+prop+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='changeState("+prop+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+prop+", 3)'></i></div></div></div><div class='desc-partAll"+prop+" desc-part'><div><input type='checkbox' onclick='changeStatus("+prop+");' "+isChecked+" id='taskA"+prop+"'><label for='taskA"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div></div></li>";
+                all += "<li><div class='title-part'><div class='overflow-titleAll"+prop+" overflow-title'><input type='checkbox' onclick='changeStatus("+tasks[prop].id+");' "+isChecked+" id='taskA"+prop+"'><label for='taskA"+prop+"'><span>"+tasks[prop].name+"</span></label></div><div class='trash-canAll"+prop+" trash-can'><div class='icons-sec'><i class='fas fa-trash-alt' onclick='changeState("+tasks[prop].id+")'></i><i class='fas fa-caret-down drop-icon' onclick='expand("+prop+", 3)'></i></div></div></div><div class='desc-partAll"+prop+" desc-part'><div><input type='checkbox' onclick='changeStatus("+tasks[prop].id+");' "+isChecked+" id='taskA"+prop+"'><label for='taskA"+prop+"'><span class='task-text' onclick='showDetails("+prop+")'>"+tasks[prop].name+"</span></label></div></div></li>";
             }
         }
     }
@@ -339,25 +338,23 @@ function changeStatus(ind)
 {
     var mssg = "", color = "";
 
-    if(tasks[ind].isComplete){
-        tasks[ind].isComplete = false;
+    var oldData = JSON.parse(localStorage.getItem("task"+ind));
+
+    oldData.updateDate = Date().slice(4, 21);
+
+    if(oldData.isComplete){
+        oldData.isComplete = false;
         mssg = "Removed task from completed list";
         color = "#B95000";
     }else{
-        tasks[ind].isComplete = true;
+        oldData.isComplete = true;
         mssg = "Added task to completed list";
         color = "#287D3C";
     }
 
-    tasks[ind].updateDate = Date().slice(4, 21);
-    var oldData = JSON.parse(localStorage.getItem("task"+ind));
-
-    oldData.updateDate = Date().slice(4, 21);
-    oldData.isComplete = tasks[ind].isComplete;
-
     localStorage.setItem("task"+ind, JSON.stringify(oldData));
 
-    render();
+    pushTask();
 
     alertPop(color, mssg);
 };
@@ -367,26 +364,23 @@ function changeState(ind)
 {
     var color = "", mssg = "";
 
-    if(tasks[ind].isDeleted){
-        tasks[ind].isDeleted = false;
+    var oldData = JSON.parse(localStorage.getItem("task"+ind));
+
+    oldData.updateDate = Date().slice(4,21);
+
+    if(oldData.isDeleted){
+        oldData.isDeleted = false;
         color = "#FF8F39";
         mssg = "Task Recovered";
     }else{
-        tasks[ind].isDeleted = true;
+        oldData.isDeleted = true;
         color = "#DA1414";
         mssg = "Task Deleted";
     }
 
-    tasks[ind].updateDate = Date().slice(4,21);
-
-    var oldData = JSON.parse(localStorage.getItem("task"+ind));
-
-    oldData.updateDate = tasks[ind].updateDate;
-    oldData.isDeleted = tasks[ind].isDeleted;
-
     localStorage.setItem("task"+ind, JSON.stringify(oldData));
 
-    render();
+    pushTask();
 
     alertPop(color, mssg);
 }
