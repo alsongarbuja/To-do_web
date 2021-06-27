@@ -178,6 +178,8 @@ function pushTask(){
             document.querySelector('#dateType').checked = true;
 
         sortTaskList(sortWay, true);
+    }else{
+        render();
     }
 }
 
