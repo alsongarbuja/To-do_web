@@ -1,6 +1,6 @@
 # To-do_web
 
-Simple To Do adder website.
+Main branch
 
 ## Start page
 
