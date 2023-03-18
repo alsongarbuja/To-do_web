@@ -9,6 +9,13 @@ const SideMenu = () => {
                 label="Add a new task"
                 value="Hello"
                 onChange={() => {}}
+                id="add-task"
+                onKeyUp={(e) => {
+                    if(e.altKey && e.key === '-') {
+                        const inp = e.target as HTMLInputElement;
+                        inp.blur();
+                    }
+                }}
             />
         </div>
         <div className="p-4">
@@ -16,7 +23,7 @@ const SideMenu = () => {
             <ul className="mt-6">
                 {
                     keybinds.map(keybind => (
-                        <li className="mb-6">
+                        <li className="mb-6" key={keybind.id}>
                             Press <span className="bg-slate-500 p-1 rounded-md font-medium">{keybind.bind}</span> {keybind.function}
                         </li>
                     ))
