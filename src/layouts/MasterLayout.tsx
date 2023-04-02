@@ -8,8 +8,9 @@ const MasterLayout = ({ children }: MasterLayoutProps) => {
   return (
     <div className="flex text-white">
         <SideMenu />
-        <div>
-            {children}
+        <div className="flex-1 p-4">
+          <h1>All Tasks</h1>
+          {children}
         </div>
     </div>
   )
