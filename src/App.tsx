@@ -6,7 +6,7 @@ import { taskList } from "./utils/tasks"
 
 const App = () => {
   return (
-    <div className="w-screen h-screen bg-[#252525]">
+    <div className="w-screen h-full bg-[#252525]">
       <MasterLayout>
         <TaskLayout>
           <GridLayout>

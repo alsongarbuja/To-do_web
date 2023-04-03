@@ -3,7 +3,7 @@ import Input from '../fields/Input'
 
 const SideMenu = () => {
   return (
-    <div className="min-h-screen border-r border-white">
+    <div className="md:min-h-screen md:border-r border-white">
         <div className="p-4">
             <Input 
                 label="Add a new task"
@@ -18,7 +18,7 @@ const SideMenu = () => {
                 }}
             />
         </div>
-        <div className="p-4">
+        <div className="p-4 hidden md:block">
             <h3>Key Binds</h3>
             <ul className="mt-6">
                 {
