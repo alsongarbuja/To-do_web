@@ -1,5 +1,6 @@
 import TaskCard from "./components/UI/TaskCard"
 import GridLayout from "./layouts/GridLayout"
+import ListLayout from "./layouts/ListLayout"
 import MasterLayout from "./layouts/MasterLayout"
 import TaskLayout from "./layouts/TaskLayout"
 import { taskList } from "./utils/tasks"
@@ -9,13 +10,13 @@ const App = () => {
     <div className="w-screen h-full bg-[#252525]">
       <MasterLayout>
         <TaskLayout>
-          <GridLayout>
+          <ListLayout>
             {
               taskList.map(task => (
-                <TaskCard {...task} isInGrid />
+                <TaskCard {...task} />
               ))
             }
-          </GridLayout>
+          </ListLayout>
         </TaskLayout>
       </MasterLayout>
     </div>
