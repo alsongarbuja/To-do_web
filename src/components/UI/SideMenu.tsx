@@ -1,19 +1,34 @@
+import { useState } from 'react';
 import { keybinds } from '../../utils/keybinds'
 import Input from '../fields/Input'
 
-const SideMenu = () => {
+interface SideMenuProps {
+    onAdd: (task: string) => void;
+}
+
+const SideMenu = ({ onAdd }: SideMenuProps) => {
+    const [task, setTask] = useState<string>('');
+
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTask(e.target.value);
+    }
+
   return (
     <div className="md:min-h-screen md:border-r border-white">
         <div className="p-4">
             <Input 
                 label="Add a new task"
-                value="Hello"
-                onChange={() => {}}
+                value={task}
+                onChange={onChange}
                 id="add-task"
                 onKeyUp={(e) => {
                     if(e.altKey && e.key === '-') {
                         const inp = e.target as HTMLInputElement;
                         inp.blur();
+                    }
+                    if(e.key === 'Enter') {
+                        onAdd(task);
+                        setTask('');
                     }
                 }}
             />

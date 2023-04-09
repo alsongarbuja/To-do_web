@@ -1,20 +1,41 @@
+import { useState } from "react"
 import TaskCard from "./components/UI/TaskCard"
-import GridLayout from "./layouts/GridLayout"
 import ListLayout from "./layouts/ListLayout"
 import MasterLayout from "./layouts/MasterLayout"
 import TaskLayout from "./layouts/TaskLayout"
-import { taskList } from "./utils/tasks"
 
 const App = () => {
+  const [taskList, setTaskList] = useState<Task[] | []>([]);
+
+  const addTask = (task: string) => {
+    const newTask: Task = {
+      id: new Date().getTime(),
+      content: task,
+      isCompleted: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isDeleted: false,
+    }
+    setTaskList(prev => ([...prev, newTask]));
+  }
+
   return (
     <div className="w-screen h-full bg-[#252525]">
-      <MasterLayout>
+      <MasterLayout addTask={addTask}>
         <TaskLayout>
           <ListLayout>
             {
-              taskList.map(task => (
-                <TaskCard {...task} />
-              ))
+              taskList.length === 0 ? (
+                <p>No Task Avilable</p>
+              ) : (
+                <>
+                  {
+                    taskList.map(task => (
+                      <TaskCard {...task} key={task.id} />
+                    ))
+                  }
+                </>
+              )
             }
           </ListLayout>
         </TaskLayout>

@@ -1,7 +1,7 @@
 import React from 'react'
 
 interface ListLayoutProps {
-    children: React.ReactNode[];
+    children: React.ReactNode | React.ReactNode[];
 }
 
 const ListLayout = ({ children }: ListLayoutProps) => {

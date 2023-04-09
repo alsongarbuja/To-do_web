@@ -15,7 +15,7 @@ const TaskCard = ({ isInGrid=false, content, isCompleted, id, isDeleted, created
   return (
     <div className={`p-4 bg-black/20 rounded-md m-3 flex gap-3 justify-between ${isInGrid ? 'flex-col': 'items-center'}`}>
         <div className="flex items-center">
-            <input id={id.toString()} type="checkbox" className="mr-2 hidden" checked={isCompleted} />
+            <input id={id.toString()} type="checkbox" className="mr-2 hidden" checked={isCompleted} onChange={()=>{}} />
             <label htmlFor={id.toString()} className="mr-2 cursor-pointer">
                 <span className={`w-4 h-4 rounded-full border-2 border-blue-500 flex items-center justify-center ${isCompleted?"bg-gray-50":""}`}>
                     {
