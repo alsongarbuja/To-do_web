@@ -1,23 +1,11 @@
-import { useState } from "react"
 import TaskCard from "./components/UI/TaskCard"
 import ListLayout from "./layouts/ListLayout"
 import MasterLayout from "./layouts/MasterLayout"
 import TaskLayout from "./layouts/TaskLayout"
+import useTask from "./hooks/useTask"
 
 const App = () => {
-  const [taskList, setTaskList] = useState<Task[] | []>([]);
-
-  const addTask = (task: string) => {
-    const newTask: Task = {
-      id: new Date().getTime(),
-      content: task,
-      isCompleted: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      isDeleted: false,
-    }
-    setTaskList(prev => ([...prev, newTask]));
-  }
+  const { tasks, addTask, removeTask } = useTask()
 
   return (
     <div className="w-screen h-full bg-[#252525]">
@@ -25,13 +13,13 @@ const App = () => {
         <TaskLayout>
           <ListLayout>
             {
-              taskList.length === 0 ? (
+              tasks.length === 0 ? (
                 <p>No Task Avilable</p>
               ) : (
                 <>
                   {
-                    taskList.map(task => (
-                      <TaskCard {...task} key={task.id} />
+                    tasks.map(task => (
+                      <TaskCard task={task} key={task.id} onDelete={removeTask} />
                     ))
                   }
                 </>
