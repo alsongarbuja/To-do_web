@@ -5,7 +5,7 @@ import TaskLayout from "./layouts/TaskLayout"
 import useTask from "./hooks/useTask"
 
 const App = () => {
-  const { tasks, addTask, removeTask } = useTask()
+  const { tasks, addTask, removeTask, completeTask } = useTask()
 
   return (
     <div className="w-screen h-full bg-[#252525]">
@@ -19,7 +19,7 @@ const App = () => {
                 <>
                   {
                     tasks.map(task => (
-                      <TaskCard task={task} key={task.id} onDelete={removeTask} />
+                      <TaskCard task={task} key={task.id} onDelete={removeTask} onCompleteToggle={completeTask} />
                     ))
                   }
                 </>

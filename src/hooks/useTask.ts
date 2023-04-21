@@ -1,74 +1,40 @@
-import { useEffect, useState } from 'react'
-import { isIdUnique } from '../helpers/task';
-
-const TASK_TODO = "tasks_todo";
+import { useEffect, useState } from 'react';
+import { addTasks, deleteTask, editTasks, getTasks, toggleCompleteTask } from '../helpers/localstorge';
 
 const useTask = () => {
     const [tasks, setTasks] = useState<Task[] | []>([])
 
+    const getTaskFromLocalStorage = () => {
+        const tasks = getTasks();
+        setTasks(tasks);
+    }
+
     useEffect(() => {
-        const tasks = localStorage.getItem(TASK_TODO);
-        if (tasks) {
-            setTasks(JSON.parse(tasks));
-        }
+        getTaskFromLocalStorage();
     }, [])
 
-    useEffect(() => {
-        localStorage.setItem(TASK_TODO, JSON.stringify(tasks));
-    }, [tasks])
-
     const addTask = (task: string) => {
+        addTasks(task);
 
-        let id = Math.random();
-
-        while (!isIdUnique(id, tasks)) {
-            id = Math.random();
-        }
-
-        const newTask: Task = {
-            id,
-            content: task,
-            isCompleted: false,
-            isDeleted: false,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        };
-        
-        setTasks(prev => ([
-            ...prev,
-            newTask,
-        ]));
-
-        // localStorage.setItem(TASK_TODO, JSON.stringify(tasks));
+        getTaskFromLocalStorage();
     }
 
     const removeTask = (id: number) => {
-        setTasks(prev => prev.filter(task => task.id !== id));
+        deleteTask(id);
 
-        // localStorage.setItem(TASK_TODO, JSON.stringify(tasks));
+        getTaskFromLocalStorage();
     }
 
     const completeTask = (id: number) => {
-        setTasks(prev => prev.map(task => {
-            if (task.id === id) {
-                task.isCompleted = !task.isCompleted;
-            }
-            return task;
-        }));
+        toggleCompleteTask(id);
 
-        // localStorage.setItem(TASK_TODO, JSON.stringify(tasks));
+        getTaskFromLocalStorage();
     }
 
     const editTask = (id: number, content: string) => {
-        setTasks(prev => prev.map(task => {
-            if (task.id === id) {
-                task.content = content;
-                task.updatedAt = new Date();
-            }
-            return task;
-        }));
+        editTasks(id, content);
 
-        // localStorage.setItem(TASK_TODO, JSON.stringify(tasks));
+        getTaskFromLocalStorage();
     }
 
     return {
