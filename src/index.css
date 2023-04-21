@@ -24,6 +24,15 @@ body {
   min-height: 100vh;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+  @apply bg-gray-200;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[#646cff] rounded-full;
+}
+
 @layer base {
   /* tags */
   a { @apply text-[#646cff] font-semibold underline hover:text-[#535bf2]; }
