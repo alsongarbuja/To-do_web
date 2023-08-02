@@ -1,12 +1,11 @@
+import type { PropsWithChildren } from "react";
 
-interface TaskLayoutProps {
-    children: React.ReactNode;
-}
+interface TaskLayoutProps { }
 
-const TaskLayout = ({ children }: TaskLayoutProps) => {
+const TaskLayout = ({ children }: PropsWithChildren<TaskLayoutProps>) => {
   return (
     <div className="p-2">
-        {children}
+      {children}
     </div>
   )
 }

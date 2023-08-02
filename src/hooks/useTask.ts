@@ -2,48 +2,49 @@ import { useEffect, useState } from 'react';
 import { addTasks, deleteTask, editTasks, getTasks, toggleCompleteTask } from '../helpers/localstorge';
 
 const useTask = () => {
-    const [tasks, setTasks] = useState<Task[] | []>([])
+  const [tasks, setTasks] = useState<Task[] | []>([])
 
-    const getTaskFromLocalStorage = () => {
-        const tasks = getTasks();
-        setTasks(tasks);
+  const getTaskFromLocalStorage = () => {
+    const tasks = getTasks();
+    setTasks(tasks);
+  }
+
+  useEffect(() => {
+    getTaskFromLocalStorage();
+  }, [])
+
+  const addTask = (task: string) => {
+    addTasks(task);
+
+    getTaskFromLocalStorage();
+  }
+  
+  const removeTask = (id: number) => {
+    if(window.confirm('Are you sure you want to delete this task?')) {
+      deleteTask(id);
+      getTaskFromLocalStorage();
     }
+  }
 
-    useEffect(() => {
-        getTaskFromLocalStorage();
-    }, [])
+  const completeTask = (id: number) => {
+    toggleCompleteTask(id);
 
-    const addTask = (task: string) => {
-        addTasks(task);
+    getTaskFromLocalStorage();
+  }
 
-        getTaskFromLocalStorage();
-    }
+  const editTask = (id: number, content: string) => {
+    editTasks(id, content);
 
-    const removeTask = (id: number) => {
-        deleteTask(id);
+    getTaskFromLocalStorage();
+  }
 
-        getTaskFromLocalStorage();
-    }
-
-    const completeTask = (id: number) => {
-        toggleCompleteTask(id);
-
-        getTaskFromLocalStorage();
-    }
-
-    const editTask = (id: number, content: string) => {
-        editTasks(id, content);
-
-        getTaskFromLocalStorage();
-    }
-
-    return {
-        tasks,
-        addTask,
-        removeTask,
-        completeTask,
-        editTask,
-    }
+  return {
+    tasks,
+    addTask,
+    removeTask,
+    completeTask,
+    editTask,
+  }
 }
 
 export default useTask

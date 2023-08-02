@@ -1,13 +1,11 @@
-import React from 'react'
+import type { PropsWithChildren } from 'react'
 
-interface ListLayoutProps {
-    children: React.ReactNode | React.ReactNode[];
-}
+interface ListLayoutProps {}
 
-const ListLayout = ({ children }: ListLayoutProps) => {
+const ListLayout = ({ children }: PropsWithChildren<ListLayoutProps>) => {
   return (
-    <div className="flex flex-col gap-2">
-        {children}
+    <div className="flex flex-col gap-1">
+      {children}
     </div>
   )
 }

@@ -1,8 +1,8 @@
 import TaskCard from "./components/UI/TaskCard"
-import ListLayout from "./layouts/ListLayout"
 import MasterLayout from "./layouts/MasterLayout"
 import TaskLayout from "./layouts/TaskLayout"
 import useTask from "./hooks/useTask"
+import GridLayout from "./layouts/GridLayout"
 
 const App = () => {
   const { tasks, addTask, removeTask, completeTask } = useTask()
@@ -11,7 +11,7 @@ const App = () => {
     <div className="w-screen h-full bg-[#252525]">
       <MasterLayout addTask={addTask}>
         <TaskLayout>
-          <ListLayout>
+          <GridLayout>
             {
               tasks.length === 0 ? (
                 <p>No Task Avilable</p>
@@ -25,7 +25,7 @@ const App = () => {
                 </>
               )
             }
-          </ListLayout>
+          </GridLayout>
         </TaskLayout>
       </MasterLayout>
     </div>

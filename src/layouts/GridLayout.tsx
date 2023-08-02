@@ -1,12 +1,11 @@
+import type { PropsWithChildren } from "react";
 
-interface GridLayoutProps {
-    children: React.ReactNode[];
-}
+interface GridLayoutProps {}
 
-const GridLayout = ({ children }: GridLayoutProps) => {
+const GridLayout = ({ children }: PropsWithChildren<GridLayoutProps>) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4">
-        {children}
+      {children}
     </div>
   )
 }
