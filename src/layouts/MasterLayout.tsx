@@ -1,19 +1,39 @@
+import { useState } from "react";
 import type { PropsWithChildren } from "react";
 
-import SideMenu from "../components/UI/SideMenu"
+import Input from "../components/fields/Input";
 
 interface MasterLayoutProps extends PropsWithChildren {
-  addTask: (task: string) => void;
+  addTodo: (task: string) => void;
 }
 
-const MasterLayout = ({ children, addTask }: MasterLayoutProps) => {
+const MasterLayout = ({ children, addTodo }: MasterLayoutProps) => {
+  const [task, setTask] = useState<string>("");
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTask(e.target.value);
+  };
+
   return (
-    <div className="flex text-white flex-col md:flex-row max-h-screen">
-      <SideMenu onAdd={addTask} />
-      <div className="flex-1 p-4 overflow-y-scroll">
-        <h1>All Tasks</h1>
-        {children}
-      </div>
+    <div className="text-white max-h-screen p-4">
+      <Input
+        label="Add a new task"
+        value={task}
+        onChange={onChange}
+        id="add-task"
+        onKeyUp={(e) => {
+          if (e.altKey && e.key === "-") {
+            const inp = e.target as HTMLInputElement;
+            inp.blur();
+          }
+          if (e.key === "Enter") {
+            addTodo(task);
+            setTask("");
+          }
+        }}
+      />
+      <h1>All Tasks</h1>
+      {children}
     </div>
   )
 }

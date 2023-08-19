@@ -1,55 +1,60 @@
 
-const LOCALSTORAGE_KEY = 'tasks_todo'; 
+const LOCALSTORAGE_KEY = 'todo_application_todos'; 
 
-export const getTasks = () => {
-  const tasks = localStorage.getItem(LOCALSTORAGE_KEY);
-  return tasks ? JSON.parse(tasks) : [];
+export const getTodos = () => {
+  const todos = localStorage.getItem(LOCALSTORAGE_KEY);
+  return todos ? JSON.parse(todos) : [];
 }
 
-export const addTasks = (task: string) => {
-  const Task: Task = {
+export const addTodos = (todo: string) => {
+  const Todo: Todo = {
     id: Date.now(),
-    content: task,
+    content: todo,
     isCompleted: false,
     isDeleted: false,
     createdAt: new Date(),
     updatedAt: new Date()
   }
 
-  const tasks = getTasks();
-  tasks.push(Task);
+  const todos = getTodos();
+  todos.push(Todo);
 
-  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(tasks));
+  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(todos));
 }
 
-export const deleteTask = (id: number) => {
-  const tasks = getTasks();
-  const newTasks = tasks.filter((task: Task) => task.id !== id);
+export const deleteTodo = (id: number) => {
+  const todos = getTodos();
+  const newTodos = todos.filter((todo: Todo) => todo.id !== id);
 
-  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newTasks));
+  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newTodos));
 }
 
-export const toggleCompleteTask = (id: number) => {
-  const tasks = getTasks();
-  const newTasks = tasks.map((task: Task) => {
-    if (task.id === id) {
-      task.isCompleted = !task.isCompleted;
+export const toggleCompleteTodo = (id: number) => {
+  const todos = getTodos();
+  const newTodos = todos.map((todo: Todo) => {
+    if (todo.id === id) {
+      todo.isCompleted = !todo.isCompleted;
     }
-    return task;
+    return todo;
   });
 
-  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newTasks));
+  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newTodos));
 }
 
-export const editTasks = (id: number, content: string) => {
-  const tasks = getTasks();
-  const newTasks = tasks.map((task: Task) => {
-    if (task.id === id) {
-      task.content = content;
-      task.updatedAt = new Date();
+export const editTodos = (id: number, content: string) => {
+  const todos = getTodos();
+  const newTodos = todos.map((todo: Todo) => {
+    if (todo.id === id) {
+      todo.content = content;
+      todo.updatedAt = new Date();
     }
-    return task;
+    return todo;
   });
 
-  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newTasks));
+  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newTodos));
+}
+
+export const getTodo = (id: number): Todo => {
+  const todos = getTodos();
+  return todos.find((todo: Todo) => todo.id === id);
 }
