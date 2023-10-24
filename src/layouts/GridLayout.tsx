@@ -4,7 +4,7 @@ interface GridLayoutProps {}
 
 const GridLayout = ({ children }: PropsWithChildren<GridLayoutProps>) => {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(400px,_1fr))]">
       {children}
     </div>
   )

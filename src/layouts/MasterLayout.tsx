@@ -22,10 +22,6 @@ const MasterLayout = ({ children, addTodo }: MasterLayoutProps) => {
         onChange={onChange}
         id="add-task"
         onKeyUp={(e) => {
-          if (e.altKey && e.key === "-") {
-            const inp = e.target as HTMLInputElement;
-            inp.blur();
-          }
           if (e.key === "Enter") {
             addTodo(task);
             setTask("");
